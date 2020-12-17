@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form>
+   			<p:confirmDialog message="Deseja excluir o item selecionado?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{projetoMBean.excluir}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Projetos Cadastrados">
+	   			<p:dataTable 
+	   				value="#{projetoMBean.listaProjeto}" 
+	   				var="projeto" 
+	   				emptyMessage="Não foram encontrados Projetos cadastrados." 
+	   				rows="10"
+	   				paginator="true">
+	   				<p:column headerText="Nome" sortBy="#{projeto.nome}" filterBy="#{projeto.nome}">
+	   					<h:outputText value="#{projeto.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Prazo" sortBy="#{projeto.prazo}">
+	   					<h:outputText value="#{projeto.prazo}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Status" sortBy="#{projeto.status.nome}" filterBy="#{projeto.status.nome}">
+	   					<h:outputText value="#{projeto.status.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Quantidade Funcionalidades" sortBy="#{fn:length(projeto.funcionalidades)}">
+	   					<h:outputText value="#{fn:length(projeto.funcionalidades)}"/>
+	   				</p:column>
+	   				<p:column headerText="Quantidade Colaboradores" sortBy="#{fn:length(projeto.colaboradores)}">
+	   					<h:outputText value="#{fn:length(projeto.colaboradores)}"/>
+	   				</p:column>
+	   				<p:column headerText="Opera&ccedil;&otilde;es">
+	   					<p:commandButton action="editarProjeto" image="ui-icon-search" type="submit" ajax="false" title="Alterar">
+	   						<f:setPropertyActionListener target="#{projetoMBean.projetoSelecionado}" value="#{projeto}" />
+	   					</p:commandButton>
+	   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+	   						<f:setPropertyActionListener target="#{projetoMBean.projetoSelecionado}" value="#{projeto}"/>
+	   					</p:commandButton>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<p:commandButton value="Incluir" action="editarProjeto" type="submit" ajax="false" />
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

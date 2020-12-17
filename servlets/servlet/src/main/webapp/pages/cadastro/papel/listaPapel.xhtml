@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form>
+   			<p:confirmDialog message="Deseja excluir o item selecionado?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{papelMBean.excluir}"
+					type="submit" oncomplete="confirm.hide()" ajax="true" update="lista"/>
+				<p:button value="N&atilde;o" onclick="confirm.hide();" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Pap&eacute;is Cadastrados">
+	   			<p:dataTable id="lista" 
+	   				value="#{papelMBean.listaPapel}" 
+	   				var="papel" 
+	   				emptyMessage="Não foram encontrados Pap&eacute;is cadastrados." 
+	   				rows="10"
+	   				paginator="true">
+	   				<p:column headerText="Id" sortBy="#{papel.id}" filterBy="#{papel.id}">
+	   					<h:outputText value="#{papel.id}" />
+	   				</p:column>
+	   				<p:column headerText="Nome" sortBy="#{papel.nome}" filterBy="#{papel.nome}">
+	   					<h:outputText value="#{papel.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Opera&ccedil;&otilde;es">
+	   					<p:commandButton action="editarPapel" image="ui-icon-search" title="Alterar" ajax="false">
+	   						<f:setPropertyActionListener target="#{papelMBean.papel}" value="#{papel}" />
+	   					</p:commandButton>
+	   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+	   						<f:setPropertyActionListener target="#{papelMBean.papel}" value="#{papel}"/>
+	   					</p:commandButton>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<p:button value="Incluir" outcome="editarPapel" />
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

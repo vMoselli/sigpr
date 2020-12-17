@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Perfil">
+   				<h:inputHidden id="idPerfil" value="#{perfilMBean.perfil.id}" rendered="#{perfilMBean.perfil.id ne null}"/>
+   				<p>
+	   				<h:outputLabel for="nome" value="Nome Perfil:" escape="false" />
+   					<h:inputText id="nome" value="#{perfilMBean.perfil.nome}" required="true" requiredMessage="Favor informar o Nome do Perfil." maxlength="50"/>
+   				</p>
+   				<p>
+	   				<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" required="true" requiredMessage="Favor informar a Descri&ccedil;&atilde;o do Perfil." value="#{perfilMBean.perfil.descricao}"></p:editor>
+   				</p>
+	   			<p:commandButton value="Salvar" image="ui-icon-disk" action="#{perfilMBean.alterar}" ajax="false" rendered="#{perfilMBean.perfil.id ne null}"/>
+	   			<p:commandButton value="Salvar" image="ui-icon-disk" action="#{perfilMBean.incluir}" ajax="false" rendered="#{perfilMBean.perfil.id eq null}"/>
+	   			<p:commandButton value="Cancelar" action="#{perfilMBean.cancelar}" ajax="false" immediate="true"/>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

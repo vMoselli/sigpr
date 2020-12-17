@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:confirmDialog message="Deseja excluir o artefato selecionado?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{tarefasAtribuidasMBean.excluirArtefato}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Tarefa">
+   				<p>
+	   				<h:outputLabel value="Projeto:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.funcionalidade.projeto.nome}" />
+				</p>
+				<p>
+	   				<h:outputLabel value="Funcionalidade:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.funcionalidade.nome}" />
+				</p>
+   				<p>
+	   				<h:outputLabel value="Nome:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.nome}" />
+				</p>
+				<p>
+					<h:outputLabel value="Prazo:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.prazo}">
+   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+   					</h:outputText>
+				</p>
+				<p>
+	   				<h:outputLabel value="Tipo:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.tipoTarefa.nome}"/>
+	   			</p>
+				<p>
+	   				<h:outputLabel value="Colaborador Responsável:" escape="false" />
+					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.colaborador.nome}" />
+   				</p>
+	   			<br />
+	   			<br />
+	   			
+	   			<h:panelGroup id="fieldArtefatos">
+		   			<p:fieldset legend="Artefatos Cadastrados">
+		   				<br />
+			   			<p:dataTable 
+			   				id="listaArtefatos"
+			   				value="#{tarefasAtribuidasMBean.listaArtefatos}" 
+			   				var="artefato" 
+			   				emptyMessage="Não foram encontrados Artefatos cadastrados para a Tarefa selecionada.">
+			   				<p:column headerText="Nome">
+			   					<h:outputText value="#{artefato.nome}" />
+			   				</p:column>
+			   				<p:column headerText="Quantidade de Arquivos">
+			   					<h:outputText value="#{fn:length(artefato.arquivos)}" />
+			   				</p:column>
+			   				<p:column headerText="Opera&ccedil;&otilde;es">
+			   					<p:commandButton action="editarArtefatoFinalizacaoTarefa" image="ui-icon-search" type="submit" ajax="false" title="Alterar">
+			   						<f:setPropertyActionListener target="#{tarefasAtribuidasMBean.artefatoSelecionado}" value="#{artefato}" />
+			   					</p:commandButton>
+			   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+			   						<f:setPropertyActionListener target="#{tarefasAtribuidasMBean.artefatoSelecionado}" value="#{artefato}"/>
+			   					</p:commandButton>
+			   				</p:column>
+			   			</p:dataTable>
+			   			<br />
+			   			<p:commandButton value="Incluir Novo Artefato" image="ui-icon-disk" action="#{tarefasAtribuidasMBean.incluirArtefatoFinalizacaoTarefa}" ajax="false" />
+		   			</p:fieldset>
+		   		</h:panelGroup>
+	   			<br/>
+	   			<p:commandButton value="Confirmar Finaliza&ccedil;&atilde;o" action="#{tarefasAtribuidasMBean.confirmarFinalizacaoTarefa}" ajax="false"/>
+	   			&nbsp;
+	   			&nbsp;
+	   			<p:commandButton value="Cancelar" action="#{tarefasAtribuidasMBean.voltarListaTarefas}" ajax="false" immediate="true"/>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

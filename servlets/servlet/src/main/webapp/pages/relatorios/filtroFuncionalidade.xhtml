@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Filtros">
+	   			<p>
+	   				<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	 				<h:selectOneMenu id="projeto"
+	 					value="#{relatorioFuncionalidadeMBean.projeto.id}">
+	 					<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+	 					<f:selectItems itemLabel="#{projeto.nome}" itemValue="#{projeto.id}" var="projeto"
+	 						value="#{relatorioFuncionalidadeMBean.listaProjetos}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="periodoInicio" value="Prazo:" escape="false" />
+	   				&nbsp;de&nbsp;
+	 				<p:calendar id="periodoInicio" 
+   						value="#{relatorioFuncionalidadeMBean.periodoInicio}" 
+   						pattern="dd/MM/yyyy" 
+   						timeZone="America/Sao_Paulo">
+   					</p:calendar>
+	 				&nbsp;à&nbsp; 
+	 				<p:calendar id="periodoFim" 
+   						value="#{relatorioFuncionalidadeMBean.periodoFim}" 
+   						pattern="dd/MM/yyyy"
+						timeZone="America/Sao_Paulo">
+   					</p:calendar>
+	   			</p>
+   			</p:fieldset>
+   			<br />
+   			<p:commandButton value="Gerar Relatório" action="#{relatorioFuncionalidadeMBean.gerarRelatorio}" ajax="false" image="ui-icon-disk"/>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

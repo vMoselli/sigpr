@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:confirmDialog message="Deseja excluir a associa&ccedil;&atilde;o selecionada?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{colaboradorMBean.excluirAssociacao}"
+					type="submit" onclick="confirm.hide()" ajax="true" update="projetosAssociados"/>
+				<p:button value="N&atilde;o" onclick="confirm.hide();" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Colaborador">
+   				<h:inputHidden value="#{colaboradorMBean.colaborador.id}" rendered="#{colaboradorMBean.colaborador.id ne null}" />
+   				<p>
+	   				<h:outputLabel value="Nome:" escape="false" />
+   					<h:outputText value="#{colaboradorMBean.colaborador.nome}" />
+				</p>
+				<p>
+					<h:outputLabel value="CPF:" escape="false" />
+   					<h:outputText value="#{colaboradorMBean.colaborador.cpf}" />
+				</p>
+				<p>
+	   				<h:outputLabel value="Celular:" escape="false" />
+   					<h:outputText value="#{colaboradorMBean.colaborador.celular}" />
+	   			</p>
+				<p>
+	   				<h:outputLabel value="Perfil:" escape="false" />
+					<h:outputText value="#{colaboradorMBean.colaborador.perfil.nome}" />
+   				</p>
+   			</p:fieldset>
+   			<br/>
+   			<br/>
+   			<p:fieldset legend="Projetos Associados" id="projetosAssociados">
+   				<p>
+   					<h:outputLabel value="Selecione um Projeto para editar a associa&ccedil;&atilde;o." style="width: 550px;"/>
+   				</p>
+   				<br />
+   				<p:dataTable
+   					paginator="true"
+   					selection="#{colaboradorMBean.projetoAssociado}"
+   					selectionMode="single"
+   					onRowSelectUpdate="fieldsAssociado"
+   					value="#{colaboradorMBean.listaProjetosAssociados}" 
+   					var="colaboradorProjeto" 
+   					emptyMessage="Não foram encontrados Projetos associados." 
+   					rows="10">
+	   				<p:column headerText="Nome Projeto" sortBy="#{colaboradorProjeto.projeto.nome}" filterBy="#{colaboradorProjeto.projeto.nome}">
+	   					<h:outputText value="#{colaboradorProjeto.projeto.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Papel Colaborador" sortBy="#{colaboradorProjeto.papel.nome}" filterBy="#{colaboradorProjeto.papel.nome}">
+	   					<h:outputText value="#{colaboradorProjeto.papel.nome}" />
+	   				</p:column>
+	   			</p:dataTable>
+	   			<h:panelGroup id="fieldsAssociado">
+	   				<h:panelGroup rendered="#{colaboradorMBean.projetoAssociado.id ne null}" style="margin-top: 10px">
+	   					<p>
+	   						<h:outputLabel for="projetoAssociado" value="Projeto Selecionado:" escape="false" />
+	   						<h:outputText id="projetoAssociado" value="#{colaboradorMBean.projetoAssociado.projeto.nome}" />
+	   					</p>
+	   					<p>
+		   					<h:outputLabel for="papelAssociado" value="Papel:" escape="false" />
+		   					<h:selectOneMenu id="papelAssociado" value="#{colaboradorMBean.projetoAssociado.papel.id}">
+		   						<f:selectItem itemLabel="Selecione um Papel" />
+		   						<f:selectItems var="papel" value="#{colaboradorMBean.listaPapel}"
+		   							itemValue="#{papel.id}" itemLabel="#{papel.nome}" />
+		   					</h:selectOneMenu>
+		   					<p:tooltip for="papelAssociado" 
+		   						hideEffect="fade" hideEffectLength="500" 
+		   						showEffect="fade" showEffectLength="500"
+		   						targetPosition="topRight" position="bottomLeft"
+		   						value="Representa qual o papel desempenhado pelo Colaborador no Projeto." />
+		   				</p>
+	   				</h:panelGroup>
+	   				<br />
+	   				<h:panelGroup style="margin-top: 10px" rendered="#{colaboradorMBean.projetoAssociado.id ne null}">
+		   				<p:commandButton 
+		   					action="#{colaboradorMBean.atualizarAssociacao}" 
+		   					ajax="true" 
+		   					image="ui-icon-disk" 
+		   					label="Salvar" 
+		   					value="Salvar"
+		   					update="projetosAssociados"/>
+		   					&nbsp;
+		   					&nbsp;
+		   				<p:button 
+		   					image="ui-icon-trash" 
+		   					value="Excluir" 
+		   					onclick="confirm.show();"/>
+		   				&nbsp;
+		   				&nbsp;
+	   				</h:panelGroup>
+	   				<p:commandButton 
+	   					value="Cancelar" 
+	   					action="#{colaboradorMBean.cancelarAssociacao}" 
+	   					ajax="false" 
+	   					immediate="true" />
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

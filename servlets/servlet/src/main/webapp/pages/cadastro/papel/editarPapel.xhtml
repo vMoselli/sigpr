@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Papel">
+   				<h:inputHidden id="idPapel" value="#{papelMBean.papel.id}" rendered="#{papelMBean.papel.id ne null}"/>
+	   			<p>
+	   				<h:outputLabel for="nome" value="Nome Papel:" escape="false" />
+   					<h:inputText id="nome" 
+   						value="#{papelMBean.papel.nome}" 
+   						required="true" 
+   						requiredMessage="Favor informar o Nome do Papel." 
+   						maxlength="50"/>
+				</p>
+				<p>
+	   				<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" 
+   						required="true" 
+   						requiredMessage="Favor informar a Descri&ccedil;&atilde;o do Papel." 
+   						value="#{papelMBean.papel.descricao}" />
+	   			</p>
+	   			<p:commandButton value="Salvar" image="ui-icon-disk" action="#{papelMBean.alterar}" ajax="false" rendered="#{papelMBean.papel.id ne null}"/>
+	   			<p:commandButton value="Salvar" image="ui-icon-disk" action="#{papelMBean.incluir}" ajax="false" rendered="#{papelMBean.papel.id eq null}"/>
+	   			<p:commandButton value="Cancelar" action="#{papelMBean.cancelar}" ajax="false" immediate="true"/>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

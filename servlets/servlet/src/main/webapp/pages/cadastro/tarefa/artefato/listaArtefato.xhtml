@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form" prependId="false">
+   			<p:confirmDialog message="Deseja excluir o item selecionado?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{artefatoMBean.excluir}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Sele&ccedil;&atilde;o de Tarefa">
+   				<p>
+					<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	   				<h:selectOneMenu id="projeto" value="#{artefatoMBean.projeto.id}">
+						<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+						<f:selectItems var="projeto" value="#{artefatoMBean.listaProjeto}" 
+							itemLabel="#{projeto.nome}" itemValue="#{projeto.id}"/>
+							
+						<f:ajax event="change" render="funcionalidade tarefa fieldArtefatos" listener="#{artefatoMBean.definirProjeto}" />
+					</h:selectOneMenu>
+				</p>
+				<p>
+					<h:outputLabel for="funcionalidade" value="Funcionalidade:" escape="false" />
+	   				<h:selectOneMenu id="funcionalidade" value="#{artefatoMBean.funcionalidade.id}">
+						<f:selectItem itemLabel="Selecione uma Funcionalidade." itemValue="" />
+						<f:selectItems var="funcionalidade" value="#{artefatoMBean.listaFuncionalidade}" 
+							itemLabel="#{funcionalidade.nome}" itemValue="#{funcionalidade.id}"/>
+							
+						<f:ajax event="change" render="tarefa fieldArtefatos" listener="#{artefatoMBean.definirFuncionalidade}" />
+					</h:selectOneMenu>
+				</p>
+				<p>
+					<h:outputLabel for="tarefa" value="Tarefa:" escape="false" />
+					<h:selectOneMenu id="tarefa" value="#{artefatoMBean.tarefa.id}">
+						<f:selectItem itemLabel="Selecione uma Tarefa." itemValue="" />
+						<f:selectItems var="tarefa" value="#{artefatoMBean.listaTarefa}" 
+							itemLabel="#{tarefa.nome}" itemValue="#{tarefa.id}" />
+							
+						<f:ajax event="change" render="fieldArtefatos" listener="#{artefatoMBean.definirTarefa}" />
+					</h:selectOneMenu>
+				</p>
+   			</p:fieldset>
+   			<br />
+   			<br />
+   			<h:panelGroup id="fieldArtefatos">
+	   			<p:fieldset legend="Artefatos Cadastrados" rendered="#{artefatoMBean.tarefa.id ne null}">
+	   				<br />
+	   				<p>
+	   					<h:outputLabel for="tarefaSelecionada" value="Tarefa Selecionada:" escape="false" />
+   						<h:outputText id="tarefaSelecionada" value="#{artefatoMBean.tarefa.nome}" />
+	   				</p>
+	   				<br />
+		   			<p:dataTable 
+		   				id="listaArtefatos"
+		   				value="#{artefatoMBean.listaArtefatos}" 
+		   				var="artefato" 
+		   				emptyMessage="Não foram encontrados Artefatos cadastrados para a Tarefa selecionada.">
+		   				<p:column headerText="Nome">
+		   					<h:outputText value="#{artefato.nome}" />
+		   				</p:column>
+		   				<p:column headerText="Quantidade de Arquivos">
+		   					<h:outputText value="#{fn:length(artefato.arquivos)}" />
+		   				</p:column>
+		   				<p:column headerText="Opera&ccedil;&otilde;es">
+		   					<p:commandButton action="editarArtefato" image="ui-icon-search" type="submit" ajax="false" title="Alterar">
+		   						<f:setPropertyActionListener target="#{artefatoMBean.artefatoSelecionado}" value="#{artefato}" />
+		   					</p:commandButton>
+		   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+		   						<f:setPropertyActionListener target="#{artefatoMBean.artefatoSelecionado}" value="#{artefato}"/>
+		   					</p:commandButton>
+		   				</p:column>
+		   			</p:dataTable>
+		   			<br />
+		   			<p:button value="Incluir" outcome="editarArtefato" />
+	   			</p:fieldset>
+	   		</h:panelGroup>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

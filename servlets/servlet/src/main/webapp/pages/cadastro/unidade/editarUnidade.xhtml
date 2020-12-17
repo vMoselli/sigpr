@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Unidade">
+   				<h:inputHidden value="#{unidadeMBean.unidade.id}" rendered="#{unidadeMBean.unidade.id ne null}" />
+   				<p>
+	   				<h:outputLabel for="nome" value="Nome:" escape="false" />
+	   				<h:inputText id="nome" 
+	   					value="#{unidadeMBean.unidade.nome}" 
+	   					required="true" 
+	   					requiredMessage="Favor informar o Nome da Unidade." 
+	   					maxlength="50"
+	   					size="60"/>
+				</p>
+				<p>
+					<h:outputLabel for="telefone" value="Telefone:" escape="false" />
+	   				<p:inputMask id="telefone" 
+	   					mask="(99) 9999-9999"
+	   					value="#{unidadeMBean.unidade.telefone}" 
+	   					required="true" 
+	   					requiredMessage="Favor informar o Número do Telefone"
+	   					size="15" />
+				</p>
+				<p>
+	   				<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+	   				<p:editor id="descricao" 
+	   					required="true" 
+	   					requiredMessage="Favor informar a Descri&ccedil;&atilde;o da Unidade."
+	   					value="#{unidadeMBean.unidade.descricao}" />
+	   			</p>
+   			</p:fieldset>
+   			<br />
+   			<p:fieldset legend="Informa&ccedil;&otilde;es de Endere&ccedil;o">
+   				<h:inputHidden value="#{unidadeMBean.endereco.id}" rendered="#{unidadeMBean.unidade.id ne null}" />
+   				<p>
+   					<h:outputLabel for="logradouro" value="Logradouro:" escape="false" />
+   					<h:inputText id="logradouro" 
+   						value="#{unidadeMBean.endereco.logradouro}" 
+   						required="true" 
+   						requiredMessage="Favor informar o Logradouro." 
+   						maxlength="100"
+   						size="60"/>
+				</p>
+				<p>
+					<h:outputLabel for="numero" value="N&uacute;mero:" escape="false" />
+   					<h:inputText id="numero" 
+   						value="#{unidadeMBean.endereco.numero}" 
+   						required="true" 
+   						requiredMessage="Favor informar o N&uacute;mero." 
+   						maxlength="6"
+   						size="10" />
+   				</p>
+				<p>
+   					<h:outputLabel for="complemento" value="Complemento:" escape="false" />
+   					<h:inputText id="complemento" 
+   						value="#{unidadeMBean.endereco.complemento}" 
+   						maxlength="100"
+   						size="60"/>
+   				</p>
+				<p>
+   					<h:outputLabel for="bairro" value="Bairro:" escape="false" />
+   					<h:inputText id="bairro"
+						value="#{unidadeMBean.endereco.bairro}" 
+						required="true" 
+						requiredMessage="Favor informar o Bairro." 
+						maxlength="100"
+						size="60"/>
+   				</p>
+				<p>
+   					<h:outputLabel for="cidade" value="Cidade:" escape="false" />
+					<h:inputText id="cidade" 
+						value="#{unidadeMBean.endereco.cidade}" 
+						required="true" 
+						requiredMessage="Favor informar a Cidade." 
+						maxlength="100"
+						size="60"/>
+   				</p>
+				<p>
+   					<h:outputLabel for="estado" value="Estado:" escape="false" />
+					<h:selectOneMenu id="estado" required="true" requiredMessage="Favor informar o Estado." value="#{unidadeMBean.endereco.estado}">
+						<f:selectItem itemLabel="Selecione um Estado" itemValue=""></f:selectItem>
+						<f:selectItems value="#{unidadeMBean.listaEstados}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado}"></f:selectItems>
+					</h:selectOneMenu>
+   				</p>
+				<p>
+   					<h:outputLabel for="cep" value="CEP:" escape="false" />
+					<p:inputMask id="cep" 
+						mask="99999-999"
+						value="#{unidadeMBean.endereco.cep}" 
+						required="true" 
+						requiredMessage="Favor informar o CEP." 
+						size="10"/>
+   				</p>
+   			</p:fieldset>
+   			<br />
+   			<p:commandButton value="Salvar" action="#{unidadeMBean.incluir}" ajax="false" image="ui-icon-disk" rendered="#{unidadeMBean.unidade.id eq null}"/>
+   			<p:commandButton value="Salvar" action="#{unidadeMBean.alterar}" ajax="false" image="ui-icon-disk" rendered="#{unidadeMBean.unidade.id ne null}"/>
+   			<p:commandButton value="Cancelar" action="#{unidadeMBean.cancelar}" ajax="false" immediate="true" />
+   		</h:form>
+   	</ui:define>
+</ui:composition>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Tarefa">
+   				<br />
+   				<p>
+	   				<h:outputLabel value="Projeto:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.funcionalidade.projeto.nome}" />
+				</p>
+				<p>
+	   				<h:outputLabel value="Funcionalidade:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.funcionalidade.nome}" />
+				</p>
+   				<p>
+	   				<h:outputLabel value="Nome:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.nome}" />
+				</p>
+				<p>
+					<h:outputLabel value="Prazo:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.prazo}">
+   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+   					</h:outputText>
+				</p>
+				<p>
+	   				<h:outputLabel value="Tipo:" escape="false" />
+   					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.tipoTarefa.nome}"/>
+	   			</p>
+				<p>
+	   				<h:outputLabel value="Colaborador Responsável:" escape="false" />
+					<h:outputText value="#{tarefasAtribuidasMBean.tarefa.colaborador.nome}" />
+   				</p>
+	   			<br />
+	   			<br />
+	   			<p:fieldset legend="Horas Realizadas">
+	   				<br />
+	   				<p:dataTable
+		   				id="lista" 
+		   				value="#{tarefasAtribuidasMBean.listaHoraTarefa}" 
+		   				var="hora" 
+		   				emptyMessage="Não foram encontradas Horas cadastradas para esta Tarefa." 
+		   				rows="10"
+		   				paginator="true"
+		   				height="300">
+		   				<p:column headerText="Data" style="align: center; text-align: center">
+		   					<h:outputText value="#{hora.inicio}" style="font-weight: bold;">
+		   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+		   					</h:outputText>
+		   				</p:column>
+		   				<p:column headerText="In&iacute;cio" style="align: center; text-align: center">
+		   					<h:outputText value="#{hora.inicio}">
+		   						<f:convertDateTime pattern="HH:mm" timeZone="America/Sao_Paulo"/>
+		   					</h:outputText>
+		   				</p:column>
+		   				<p:column headerText="Fim" style="align: center; text-align: center">
+		   					<h:outputText value="#{hora.fim}">
+		   						<f:convertDateTime pattern="HH:mm" timeZone="America/Sao_Paulo"/>
+		   					</h:outputText>
+		   				</p:column>
+		   				<p:column headerText="Total" style="align: center; text-align: center">
+		   					<h:outputText value="#{hora.totalHoras}" redenred="#{hora.totalHoras ne null}" />
+		   				</p:column>
+		   				<p:column headerText="Colaborador" rendered="#{tarefasAtribuidasMBean.colaboradorGerente}">
+		   					<h:outputText value="#{hora.colaborador.nome}" />
+		   				</p:column>
+		   			</p:dataTable>
+	   			</p:fieldset>
+	   			<br />
+	   			<br />
+	   			<p:fieldset legend="Artefatos Cadastrados">
+	   				<br />
+		   			<p:dataTable 
+		   				id="listaArtefatos"
+		   				value="#{tarefasAtribuidasMBean.listaArtefatos}" 
+		   				var="artefato" 
+		   				emptyMessage="Não foram encontrados Artefatos cadastrados para a Tarefa selecionada.">
+		   				<p:column headerText="Nome">
+		   					<h:outputText value="#{artefato.nome}" />
+		   				</p:column>
+		   				<p:column headerText="Quantidade de Arquivos">
+		   					<h:outputText value="#{fn:length(artefato.arquivos)}" />
+		   				</p:column>
+		   				<p:column headerText="Opera&ccedil;&otilde;es">
+		   					<p:commandButton action="#{tarefasAtribuidasMBean.visualizarArtefatos}" image="ui-icon-search" title="Visualizar Artefato" ajax="false">
+		   						<f:setPropertyActionListener target="#{tarefasAtribuidasMBean.artefatoSelecionado}" value="#{artefato}" />
+		   					</p:commandButton>
+		   				</p:column>
+		   			</p:dataTable>
+	   			</p:fieldset>
+	   			<br />
+	   			<p:commandButton value="Voltar" action="#{tarefasAtribuidasMBean.voltarListaTarefas}" ajax="false" immediate="true"/>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>
+

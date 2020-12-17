@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Funcionalidade">
+   				<h:inputHidden value="#{funcionalidadeMBean.funcionalidade.id}" rendered="#{funcionalidadeMBean.funcionalidade.id ne null}" />
+   				<p>
+	   				<h:outputLabel for="projetoFuncionalidade" value="Projeto:" escape="false" />
+   					<h:selectOneMenu id="projetoFuncionalidade" value="#{funcionalidadeMBean.projeto.id}" 
+   						required="true"
+   						requiredMessage="Favor informar o Projeto da Funcionalidade.">
+   						<f:selectItem itemLabel="Selecione um Projeto" itemValue=""/>
+   						<f:selectItems var="projeto" value="#{funcionalidadeMBean.listaProjeto}" itemValue="#{projeto.id}" itemLabel="#{projeto.nome}" />
+   					</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="nomeFuncionalidade" value="Nome:" escape="false" />
+   					<h:inputText id="nomeFuncionalidade" 
+   						value="#{funcionalidadeMBean.funcionalidade.nome}"
+   						required="true" 
+   						requiredMessage="Favor informar o Nome da Funcionalidade." 
+   						maxlength="50"
+   						size="60"/>
+				</p>
+	   			<p>
+					<h:outputLabel for="prazoFuncionalidade" value="Prazo:" escape="false" />
+   					<p:calendar id="prazoFuncionalidade" 
+   						value="#{funcionalidadeMBean.funcionalidade.prazo}" 
+   						required="true" 
+   						requiredMessage="Favor informar o Prazo da Funcionalidade." 
+   						pattern="dd/MM/yyyy">
+   					</p:calendar>
+				</p>
+	   			<p>
+					<h:outputLabel for="statusFuncionalidade" value="Status:" escape="false" />
+   					<h:selectOneMenu id="statusFuncionalidade" value="#{funcionalidadeMBean.status.id}" 
+   						required="true"
+   						requiredMessage="Favor informar o Status da Funcionalidade.">
+   						<f:selectItem itemLabel="Selecione um Status" itemValue=""/>
+   						<f:selectItems var="status" value="#{statusMBean.listaStatusPorFuncionalidade}" itemValue="#{status.id}" itemLabel="#{status.nome}" />
+   					</h:selectOneMenu>
+				</p>
+	   			<p>
+					<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" 
+   						required="true" 
+   						requiredMessage="Favor informar a Descri&ccedil;&atilde;o da Funcionalidade." 
+   						value="#{funcionalidadeMBean.funcionalidade.descricao}"/>
+	   			</p>
+   			</p:fieldset>
+   			<p:commandButton value="Salvar" action="#{funcionalidadeMBean.incluir}" ajax="false" image="ui-icon-disk" rendered="#{funcionalidadeMBean.funcionalidade.id eq null}"/>
+   			<p:commandButton value="Salvar" action="#{funcionalidadeMBean.alterar}" ajax="false" image="ui-icon-disk" rendered="#{funcionalidadeMBean.funcionalidade.id ne null}"/>
+   			<p:commandButton value="Cancelar" action="#{funcionalidadenMBean.cancelar}" ajax="false" immediate="true" />
+   		</h:form>
+   	</ui:define>
+</ui:composition>

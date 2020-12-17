@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<p:dialog 
+   			closable="true"
+   			closeOnEscape="true"
+   			draggable="false"
+   			header="Solicita&ccedil;&otilde;es de Demanda N&atilde;o Atendidas"
+   			height="180"
+   			width="350"
+   			hideEffect="fade"
+   			showEffect="fade"
+   			modal="true"
+   			position="center"
+   			rendered="#{not empty loginUsuarioMBean.solicitacoesNaoAtendidas and not loginUsuarioMBean.alertVisualizado}"
+   			resizable="false"
+   			visible="true"
+   			widgetVar="solicitacoes">
+   			<h:form>
+   				<p>
+					<h:outputLabel value="Existem solicitações de demanda não atendidas, deseja visualizá-las?" escape="false" />
+				</p>
+   				<br />
+   				<p:commandButton ajax="false" action="/pages/demanda/listaSolicitacao.prime" value="Sim" oncomplete="solicitacoes.hide();">
+   					<f:setPropertyActionListener target="#{demandaMBean.colaboradorLogadoLista}" value="#{loginUsuarioMBean.idColaborador}" />
+   					<f:setPropertyActionListener target="#{loginUsuarioMBean.alertVisualizado}" value="#{true}" />
+   				</p:commandButton>
+   				<p:commandButton value="N&atilde;o" onclick="solicitacoes.hide();" type="button" />
+   			</h:form>
+   		</p:dialog>
+   	</ui:define>
+</ui:composition>
+

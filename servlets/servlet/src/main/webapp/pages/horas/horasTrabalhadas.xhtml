@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form>
+   			<p:confirmDialog 
+   				message="Deseja confirmar o Apontamento?" 
+   				modal="true"
+   				showEffect="fade" 
+   				hideEffect="fade" 
+   				draggable="false" 
+   				width="500"
+				header="Confirma&ccedil;&atilde;o de Apontamento" 
+				severity="alert"
+				widgetVar="confirm">
+				<h:panelGroup id="justificativa">
+					<p:editor 
+						width="450"
+						required="true" 
+						requiredMessage="Favor informar a Justificativa da Hora Extra." 
+						value="#{apontamentoMBean.justificativa}" rendered="#{apontamentoMBean.horaExtra}">
+					</p:editor>
+				</h:panelGroup>
+				<p:commandButton value="Sim" action="#{apontamentoMBean.apontar}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Horas Trabalhadas">
+	   			<p:dataTable
+	   				id="lista" 
+	   				value="#{apontamentoMBean.listaHoras}" 
+	   				var="hora" 
+	   				emptyMessage="Não foram encontradas Horas cadastradas." 
+	   				rows="10"
+	   				paginator="true"
+	   				height="300">
+	   				<p:column headerText="Data" style="align: center; text-align: center">
+	   					<h:outputText value="#{hora.inicio}" style="font-weight: bold;">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="In&iacute;cio" style="align: center; text-align: center">
+	   					<h:outputText value="#{hora.inicio}">
+	   						<f:convertDateTime pattern="HH:mm" timeZone="America/Sao_Paulo"/>
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Fim" style="align: center; text-align: center">
+	   					<h:outputText value="#{hora.fim}">
+	   						<f:convertDateTime pattern="HH:mm" timeZone="America/Sao_Paulo"/>
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Total" style="align: center; text-align: center">
+	   					<h:outputText value="#{hora.totalHoras}" redenred="#{hora.totalHoras ne null}" />
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<p:commandButton value="Apontar" 
+	   				oncomplete="confirm.show();" 
+	   				image="ui-icon-clock"
+	   				update="justificativa">
+	   			</p:commandButton>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

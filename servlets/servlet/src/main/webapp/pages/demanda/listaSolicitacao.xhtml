@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form>
+   			<p:confirmDialog message="Deseja cancelar a Solicita&ccedil;&atilde;o de Demanda selecionada?" 
+   				modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Cancelamento" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{demandaMBean.cancelarSolicitacao}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Solicita&ccedil;&otilde;es de Demanda Cadastradas">
+	   			<p:dataTable 
+	   				id="listaSolicitacao"
+	   				value="#{demandaMBean.listaSolicitacao}" 
+	   				var="solicitacao" 
+	   				emptyMessage="Não foram encontradas Solicita&ccedil;&otilde;es de Demanda cadastradas." 
+	   				rows="10"
+	   				paginator="true"
+	   				selection="#{demandaMBean.solicitacao}"
+	   				selectionMode="single"
+	   				onRowSelectUpdate="buttons"
+	   				onRowUnselectUpdate="buttons">
+	   				<p:column headerText="Prioridade" sortBy="#{solicitacao.prioridade}" filterBy="#{solicitacao.prioridade}">
+	   					<h:outputText value="#{solicitacao.prioridade}" />
+	   				</p:column>
+	   				<p:column headerText="Data da Solicita&ccedil;&atilde;o" sortBy="#{solicitacao.dataSolicitacao}">
+	   					<h:outputText value="#{solicitacao.dataSolicitacao}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Status" sortBy="#{solicitacao.status}" filterBy="#{solicitacao.status}">
+	   					<h:outputText value="#{solicitacao.status}" />
+	   				</p:column>
+	   				<p:column headerText="Data do Atendimento" sortBy="#{solicitacao.dataAtendimento}">
+	   					<h:outputText value="#{solicitacao.dataAtendimento}" rendered="#{solicitacao.dataAtendimento ne null}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Colaborador Atendimento" sortBy="#{solicitacao.colaborador.nome}" filterBy="#{solicitacao.colaborador.nome}">
+	   					<h:outputText value="#{solicitacao.colaborador.nome}" rendered="#{solicitacao.colaborador ne null}"/>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<br />
+	   			<h:panelGroup id="buttons" style="margin-top: 10px;">
+	   				<p:commandButton 
+	   					image="ui-icon-search"
+	   					value="Visualizar Solicita&ccedil;&atilde;o" 
+	   					action="visualizarSolicitacao" 
+	   					type="submit" 
+	   					ajax="false"
+						rendered="#{demandaMBean.solicitacao.id ne null}"/>
+					<p:commandButton 
+	   					image="ui-icon-check"
+	   					value="Atender Solicita&ccedil;&atilde;o" 
+	   					action="#{demandaMBean.atenderSolicitacao}" 
+	   					type="submit" 
+	   					ajax="false"
+						rendered="#{demandaMBean.solicitacao.id ne null}"/>
+					<p:commandButton 
+	   					value="Cancelar Solicita&ccedil;&atilde;o"
+	   					oncomplete="confirm.show();" 
+	   					image="ui-icon-trash"
+						rendered="#{demandaMBean.solicitacao.id ne null}"/>
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

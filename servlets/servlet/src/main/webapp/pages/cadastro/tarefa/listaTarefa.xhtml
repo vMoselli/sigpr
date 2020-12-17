@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form>
+   			<p:confirmDialog message="Deseja excluir o item selecionado?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{tarefaMBean.excluir}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Tarefas Cadastradas">
+	   			<p:dataTable value="#{tarefaMBean.listaTarefa}" 
+	   				var="tarefa" 
+	   				emptyMessage="Não foram encontradas Tarefas cadastradas." 
+	   				rows="10"
+	   				paginator="true">
+	   				<p:column headerText="Nome" sortBy="#{tarefa.nome}" filterBy="#{tarefa.nome}">
+	   					<h:outputText value="#{tarefa.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Prazo" sortBy="#{tarefa.prazo}">
+	   					<h:outputText value="#{tarefa.prazo}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Status" sortBy="#{tarefa.status.nome}" filterBy="#{tarefa.status.nome}">
+	   					<h:outputText value="#{tarefa.status.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Colaborador Responsável" sortBy="#{tarefa.colaborador.nome}" filterBy="#{tarefa.colaborador.nome}">
+	   					<h:outputText value="#{tarefa.colaborador.nome}" rendered="#{tarefa.colaborador ne null}"/>
+	   				</p:column>
+	   				<p:column headerText="Opera&ccedil;&otilde;es">
+	   					<p:commandButton action="#{tarefaMBean.inicializaEdicao}" image="ui-icon-search" type="submit" ajax="false" title="Alterar">
+	   						<f:setPropertyActionListener target="#{tarefaMBean.tarefaSelecionada}" value="#{tarefa}" />
+	   					</p:commandButton>
+	   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+	   						<f:setPropertyActionListener target="#{tarefaMBean.tarefaSelecionada}" value="#{tarefa}"/>
+	   					</p:commandButton>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<p:commandButton value="Incluir" action="#{tarefaMBean.inicializaEdicao}" type="submit" ajax="false" />
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

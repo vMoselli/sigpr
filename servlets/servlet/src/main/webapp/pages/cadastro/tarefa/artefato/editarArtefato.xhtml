@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:confirmDialog 
+   					message="Deseja excluir o item selecionado?"
+   					modal="true"
+ 					showEffect="fade" 
+ 					hideEffect="fade" 
+ 					draggable="false" 
+ 					width="400"
+					header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" 
+					severity="alert"
+					widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{artefatoMBean.excluirArquivo}"
+					type="submit" onclick="confirm.hide()" ajax="true" update="messages, listaArquivos"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Artefato">
+   				<h:inputHidden value="#{artefatoMBean.artefato.id}" rendered="#{artefatoMBean.artefato.id ne null}" />
+   				<p>
+	   				<h:outputLabel value="Projeto:" for="projeto" escape="false" />
+   					<h:outputText id="projeto" value="#{artefatoMBean.tarefa.funcionalidade.projeto.nome}" />
+   				</p>
+   				<p>
+	   				<h:outputLabel value="Funcionalidade:" for="funcionalidade" escape="false"/>
+   					<h:outputText id="funcionalidade" value="#{artefatoMBean.tarefa.funcionalidade.nome}" />
+   				</p>
+				<p>
+					<h:outputLabel value="Tarefa:" for="tarefa" escape="false" />
+   					<h:outputText id="tarefa" value="#{artefatoMBean.tarefa.nome}"/>
+				</p>
+	   			<p>
+	   				<h:outputLabel for="nomeArtefato" value="Nome Artefato:" escape="false" />
+   					<h:inputText id="nomeArtefato" 
+   						value="#{artefatoMBean.artefato.nome}"
+   						required="true" 
+   						requiredMessage="Favor informar o Nome do Artefato." 
+   						maxlength="50"
+   						size="60"/>
+				</p>
+				<p>
+					<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" 
+   						required="true" 
+   						requiredMessage="Favor informar a Descri&ccedil;&atilde;o do Artefato." 
+   						value="#{artefatoMBean.artefato.descricao}"/>
+	   			</p>
+   			</p:fieldset>
+   			<br/>
+			<p:fieldset legend="Arquivos">
+				<p:fileUpload
+					id="fileUpload" 
+					multiple="true" 
+					allowTypes="*.doc;*.docx;*.xls;*.xlsx;*.pdf;*.txt" 
+					auto="false"
+					customUI="false"
+					fileUploadListener="#{artefatoMBean.handleFileUpload}"
+					description="Arquivos."
+					label="Selecionar"
+					sizeLimit="2097152"
+					update="messages, listaArquivos"
+					widgetVar="fileUpload"/>
+				<br/>
+				<br/>
+				<p:dataTable 
+	   				id="listaArquivos"
+	   				value="#{artefatoMBean.listaArquivos}" 
+	   				var="arquivo" 
+	   				emptyMessage="Não foram encontrados Arquivos cadastrados para o Artefato selecionado.">
+	   				<p:column headerText="Nome">
+	   					<h:outputText value="#{arquivo.fileName}" />
+	   				</p:column>
+	   				<p:column headerText="Tamanho">
+	   					<h:outputText value="#{arquivo.fileSize}">
+	   						<f:converter converterId="fileSizeConverter" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Extensão">
+	   					<h:outputText value="#{arquivo.fileType}"/>
+	   				</p:column>
+	   				<p:column headerText="Opera&ccedil;&otilde;es">
+	   					<p:commandButton ajax="false" image="ui-icon-arrowreturnthick-1-s" title="Baixar" actionListener="#{artefatoMBean.handleFileDownload(arquivo)}">
+	   						<p:fileDownload value="#{artefatoMBean.fileDownload}" />
+	   					</p:commandButton>
+	   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+	   						<f:setPropertyActionListener target="#{artefatoMBean.arquivoSelecionado}" value="#{arquivo}"/>
+	   					</p:commandButton>
+	   				</p:column>
+	   			</p:dataTable>
+			</p:fieldset>
+   			<p:commandButton value="Salvar" action="#{artefatoMBean.incluir}" ajax="false" image="ui-icon-disk" rendered="#{artefatoMBean.artefato.id eq null}"/>
+   			<p:commandButton value="Salvar" action="#{artefatoMBean.alterar}" ajax="false" image="ui-icon-disk" rendered="#{artefatoMBean.artefato.id ne null}"/>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

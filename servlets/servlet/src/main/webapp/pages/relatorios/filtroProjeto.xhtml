@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Filtros">
+	   			<p>
+	   				<h:outputLabel for="colaborador" value="Colaborador:" escape="false" />
+	 				<h:selectOneMenu id="colaborador"
+	 					value="#{relatorioProjetoMBean.colaborador.id}">
+	 					<f:selectItem itemLabel="Selecione um Colaborador." itemValue="" />
+	 					<f:selectItems itemLabel="#{colaborador.nome}" itemValue="#{colaborador.id}" var="colaborador"
+	 						value="#{relatorioProjetoMBean.listaColaboradores}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="perfil" value="Perfil:" escape="false" />
+	 				<h:selectOneMenu id="perfil"
+	 					value="#{relatorioProjetoMBean.perfil.id}">
+	 					<f:selectItem itemLabel="Selecione um Perfil." itemValue="" />
+	 					<f:selectItems itemLabel="#{perfil.nome}" itemValue="#{perfil.id}" var="perfil"
+	 						value="#{relatorioProjetoMBean.listaPerfis}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="papel" value="Papel:" escape="false" />
+	 				<h:selectOneMenu id="papel"
+	 					value="#{relatorioProjetoMBean.papel.id}">
+	 					<f:selectItem itemLabel="Selecione um Papel." itemValue="" />
+	 					<f:selectItems itemLabel="#{papel.nome}" itemValue="#{papel.id}" var="papel"
+	 						value="#{relatorioProjetoMBean.listaPapeis}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	 				<h:selectOneMenu id="projeto"
+	 					value="#{relatorioProjetoMBean.projeto.id}">
+	 					<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+	 					<f:selectItems itemLabel="#{projeto.nome}" itemValue="#{projeto.id}" var="projeto"
+	 						value="#{relatorioProjetoMBean.listaProjetos}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="periodoInicio" value="Prazo:" escape="false" />
+	   				&nbsp;de&nbsp;
+	 				<p:calendar id="periodoInicio" 
+   						value="#{relatorioProjetoMBean.periodoInicio}" 
+   						pattern="dd/MM/yyyy" 
+   						timeZone="America/Sao_Paulo">
+   					</p:calendar>
+	 				&nbsp;à&nbsp; 
+	 				<p:calendar id="periodoFim" 
+   						value="#{relatorioProjetoMBean.periodoFim}" 
+   						pattern="dd/MM/yyyy"
+						timeZone="America/Sao_Paulo">
+   					</p:calendar>
+	   			</p>
+   			</p:fieldset>
+   			<br />
+   			<p:commandButton value="Gerar Relatório" action="#{relatorioProjetoMBean.gerarRelatorio}" ajax="false" image="ui-icon-disk"/>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

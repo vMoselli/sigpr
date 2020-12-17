@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Filtros">
+	   			<p>
+	   				<h:outputLabel for="colaborador" value="Colaborador:" escape="false" />
+	 				<h:selectOneMenu id="colaborador"
+	 					value="#{relatorioHorasTarefaMBean.colaborador.id}">
+	 					<f:selectItem itemLabel="Selecione um Colaborador." itemValue="" />
+	 					<f:selectItems itemLabel="#{colaborador.nome}" itemValue="#{colaborador.id}" var="colaborador"
+	 						value="#{relatorioHorasTarefaMBean.listaColaboradores}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="perfil" value="Perfil:" escape="false" />
+	 				<h:selectOneMenu id="perfil"
+	 					value="#{relatorioHorasTarefaMBean.perfil.id}">
+	 					<f:selectItem itemLabel="Selecione um Perfil." itemValue="" />
+	 					<f:selectItems itemLabel="#{perfil.nome}" itemValue="#{perfil.id}" var="perfil"
+	 						value="#{relatorioHorasTarefaMBean.listaPerfis}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	 				<h:selectOneMenu id="projeto"
+	 					value="#{relatorioHorasTarefaMBean.projeto.id}">
+	 					<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+	 					<f:selectItems itemLabel="#{projeto.nome}" itemValue="#{projeto.id}" var="projeto"
+	 						value="#{relatorioHorasTarefaMBean.listaProjetos}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="funcionalidade" value="Funcionalidade:" escape="false" />
+	 				<h:selectOneMenu id="funcionalidade"
+	 					value="#{relatorioHorasTarefaMBean.funcionalidade.id}">
+	 					<f:selectItem itemLabel="Selecione uma Funcionalidade." itemValue="" />
+	 					<f:selectItems itemLabel="#{funciondalidade.nome}" itemValue="#{funciondalidade.id}" var="funciondalidade"
+	 						value="#{relatorioHorasTarefaMBean.listaFuncionalidades}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="tarefa" value="Tarefa:" escape="false" />
+	 				<h:selectOneMenu id="tarefa"
+	 					value="#{relatorioHorasTarefaMBean.tarefa.id}">
+	 					<f:selectItem itemLabel="Selecione uma Tarefa." itemValue="" />
+	 					<f:selectItems itemLabel="#{tarefa.nome}" itemValue="#{tarefa.id}" var="tarefa"
+	 						value="#{relatorioHorasTarefaMBean.listaTarefas}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="tipoTarefa" value="Tipo Tarefa:" escape="false" />
+	 				<h:selectOneMenu id="tipoTarefa"
+	 					value="#{relatorioHorasTarefaMBean.tipoTarefa}">
+	 					<f:selectItem itemLabel="Selecione um Tipo de Tarefa." itemValue="" />
+	 					<f:selectItems itemLabel="#{tipoTarefa.nome}" itemValue="#{tipoTarefa}" var="tipoTarefa"
+	 						value="#{relatorioHorasTarefaMBean.listaTiposTarefa}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="periodoInicio" value="Período:" escape="false" />
+	   				&nbsp;de&nbsp;
+	 				<p:calendar id="periodoInicio" 
+   						value="#{relatorioHorasTarefaMBean.periodoInicio}" 
+   						pattern="dd/MM/yyyy" 
+   						timeZone="America/Sao_Paulo">
+   					</p:calendar>
+	 				&nbsp;à&nbsp; 
+	 				<p:calendar id="periodoFim" 
+   						value="#{relatorioHorasTarefaMBean.periodoFim}" 
+   						pattern="dd/MM/yyyy"
+						timeZone="America/Sao_Paulo">
+   					</p:calendar>
+	   			</p>
+   			</p:fieldset>
+   			<br />
+   			<p:commandButton value="Gerar Relatório" action="#{relatorioHorasTarefaMBean.gerarRelatorio}" ajax="false" image="ui-icon-disk"/>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

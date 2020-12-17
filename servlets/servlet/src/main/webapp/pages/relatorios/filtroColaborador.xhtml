@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Filtros">
+	   			<p>
+	   				<h:outputLabel for="unidade" value="Unidade:" escape="false" />
+	 				<h:selectOneMenu id="unidade"
+	 					value="#{relatorioColaboradorMBean.unidade.id}">
+	 					<f:selectItem itemLabel="Selecione uma Unidade." itemValue="" />
+	 					<f:selectItems itemLabel="#{unidade.nome}" itemValue="#{unidade.id}" var="unidade"
+	 						value="#{relatorioColaboradorMBean.listaUnidades}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="perfil" value="Perfil:" escape="false" />
+	 				<h:selectOneMenu id="perfil"
+	 					value="#{relatorioColaboradorMBean.perfil.id}">
+	 					<f:selectItem itemLabel="Selecione um Perfil." itemValue="" />
+	 					<f:selectItems itemLabel="#{perfil.nome}" itemValue="#{perfil.id}" var="perfil"
+	 						value="#{relatorioColaboradorMBean.listaPerfis}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="papel" value="Papel:" escape="false" />
+	 				<h:selectOneMenu id="papel"
+	 					value="#{relatorioColaboradorMBean.papel.id}">
+	 					<f:selectItem itemLabel="Selecione um Papel." itemValue="" />
+	 					<f:selectItems itemLabel="#{papel.nome}" itemValue="#{papel.id}" var="papel"
+	 						value="#{relatorioColaboradorMBean.listaPapeis}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	 				<h:selectOneMenu id="projeto"
+	 					value="#{relatorioColaboradorMBean.projeto.id}">
+	 					<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+	 					<f:selectItems itemLabel="#{projeto.nome}" itemValue="#{projeto.id}" var="projeto"
+	 						value="#{relatorioColaboradorMBean.listaProjetos}"/>
+	 				</h:selectOneMenu>
+	   			</p>
+   			</p:fieldset>
+   			<br />
+   			<p:commandButton value="Gerar Relatório" action="#{relatorioColaboradorMBean.gerarRelatorio}" ajax="false" image="ui-icon-disk"/>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Tarefa">
+   				<h:inputHidden value="#{tarefaMBean.tarefa.id}" rendered="#{tarefaMBean.tarefa.id ne null}" />
+	   			<p>
+	   				<h:outputLabel value="Nome:" escape="false" />
+   					<h:outputText value="#{tarefaMBean.tarefa.nome}" />
+				</p>
+				<p>
+					<h:outputLabel value="Prazo:" escape="false" />
+   					<h:outputText value="#{tarefaMBean.tarefa.prazo}">
+   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+   					</h:outputText>
+				</p>
+				<p>
+	   				<h:outputLabel value="Tipo:" escape="false" />
+   					<h:outputText value="#{tarefaMBean.tarefa.tipoTarefa.nome}"/>
+	   			</p>
+				<p>
+	   				<h:outputLabel value="Colaborador Responsável:" escape="false" />
+					<h:outputText value="#{tarefaMBean.tarefa.colaborador.nome}" />
+   				</p>
+   			</p:fieldset>
+   			<p:fieldset legend="Colaboradores">
+	   			<p:dataTable 
+	   				value="#{tarefaMBean.listaColaboradorPorProjeto}" 
+	   				var="colaborador" 
+	   				emptyMessage="Não foram encontrados Colaboradores associados ao Projeto selecionado." 
+	   				rows="10"
+	   				paginator="true"
+	   				selection="#{tarefaMBean.colaboradorSelecionado}"
+	   				selectionMode="single"
+	   				onRowSelectUpdate="buttons">
+	   				<p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">
+	   					<h:outputText value="#{colaborador.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Perfil" sortBy="#{colaborador.perfil.nome}" filterBy="#{colaborador.perfil.nome}">
+	   					<h:outputText value="#{colaborador.perfil.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Unidade" sortBy="#{colaborador.unidade.nome}" filterBy="#{colaborador.unidade.nome}">
+	   					<h:outputText value="#{colaborador.unidade.nome}" rendered="#{colaborador.unidade ne null}"/>
+	   				</p:column>
+	   				<p:column headerText="Tarefas Atribu&iacute;das" sortBy="#{fn:length(colaborador.tarefas)}">
+	   					<h:outputText value="#{fn:length(colaborador.tarefas)}" rendered="#{not empty colaborador.tarefas}"/>
+	   					<h:outputText value="0" rendered="#{empty colaborador.tarefas}"/>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<h:panelGroup id="buttons" style="margin-top: 10px">
+	   				<p:commandButton 
+	   					action="#{tarefaMBean.atribuir}" 
+	   					ajax="false" 
+	   					image="ui-icon-disk" 
+	   					label="Atribuir" 
+	   					value="Atribuir"
+	   					rendered="#{tarefaMBean.colaboradorSelecionado.id ne null}"/>
+   					&nbsp;
+   					&nbsp;
+   					<p:commandButton 
+	   					value="Cancelar" 
+	   					action="#{tarefaMBean.cancelarAtribuicao}" 
+	   					ajax="false" 
+	   					immediate="true" />
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

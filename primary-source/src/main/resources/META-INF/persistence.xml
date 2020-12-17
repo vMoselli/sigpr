@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="SIGPRJPA">
+		<jta-data-source>jdbc/SIGPRDS</jta-data-source>
+		<class>br.com.sigpr.entity.usuario.Usuario</class>
+		<class>br.com.sigpr.entity.unidade.Unidade</class>
+		<class>br.com.sigpr.entity.tarefa.Tarefa</class>
+		<class>br.com.sigpr.entity.tarefa.Artefato</class>
+		<class>br.com.sigpr.entity.tarefa.Arquivo</class>
+		<class>br.com.sigpr.entity.status.Status</class>
+		<class>br.com.sigpr.entity.projeto.Projeto</class>
+		<class>br.com.sigpr.entity.perfil.Perfil</class>
+		<class>br.com.sigpr.entity.papel.Papel</class>
+		<class>br.com.sigpr.entity.horas.HoraTarefa</class>
+		<class>br.com.sigpr.entity.horas.HoraColaborador</class>
+		<class>br.com.sigpr.entity.historico.Historico</class>
+		<class>br.com.sigpr.entity.funcionalidade.Funcionalidade</class>
+		<class>br.com.sigpr.entity.endereco.Endereco</class>
+		<class>br.com.sigpr.entity.colaboradorprojeto.ColaboradorProjeto</class>
+		<class>br.com.sigpr.entity.colaborador.Colaborador</class>
+		<class>br.com.sigpr.entity.demanda.Solicitacao</class>
+		<properties>
+			<property name="eclipselink.ddl-generation.output-mode" value="both"/>
+			<property name="eclipselink.jdbc.batch-writing" value="Oracle-JDBC"/>
+			<property name="eclipselink.logging.level" value="FINE"/>
+		</properties>
+	</persistence-unit>
+</persistence>

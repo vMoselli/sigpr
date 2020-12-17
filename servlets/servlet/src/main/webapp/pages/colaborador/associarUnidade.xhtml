@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Colaborador">
+   				<h:inputHidden value="#{colaboradorMBean.colaborador.id}" rendered="#{colaboradorMBean.colaborador.id ne null}" />
+	   			<p>
+	   				<h:outputLabel for="nome" value="Nome:" escape="false" />
+	   				<h:outputText id="nome" value="#{colaboradorMBean.colaborador.nome}" />
+				</p>
+				<p>
+					<h:outputLabel for="cpf" value="CPF:" escape="false" />
+	   				<h:outputText id="cpf" value="#{colaboradorMBean.colaborador.cpf}" />
+				</p>
+				<p>
+	   				<h:outputLabel for="celular" value="Celular:" escape="false" />
+	   				<h:outputText id="celular" value="#{colaboradorMBean.colaborador.celular}" />
+	   			</p>
+				<p>
+	   				<h:outputLabel for="nomePerfil" value="Perfil:" escape="false" />
+   					<h:outputText id="nomePerfil" value="#{colaboradorMBean.colaborador.perfil.nome}" />
+   				</p>
+   			</p:fieldset>
+   			<br/>
+   			<br/>
+   			<p:fieldset legend="Unidades">
+   				<p>
+   					<h:outputLabel value="Selecione a unidade em que o Colaborador será alocado." style="width: 550px" />
+   				</p>
+   				<br />
+   				<p:dataTable
+   					paginator="true"
+   					selection="#{colaboradorMBean.unidade}"
+   					selectionMode="single"
+   					onRowSelectUpdate="fields"
+   					onRowUnselectUpdate="fields"
+   					value="#{unidadeMBean.listaUnidade}" 
+   					var="unidade" 
+   					emptyMessage="Não foram encontradas Unidades cadastradas." 
+   					rows="10">
+	   				<p:column headerText="Nome" sortBy="#{unidade.nome}" filterBy="#{unidade.nome}">
+	   					<h:outputText value="#{unidade.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Telefone">
+	   					<h:outputText value="#{unidade.telefone}" />
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br/>
+	   			<br/>
+	   			<h:panelGroup id="fields">
+	   				<h:panelGroup rendered="#{colaboradorMBean.unidade.id ne null}">
+	   					<p>
+	   						<h:outputLabel for="unidade" value="Unidade Selecionada:" escape="false" />
+		   					<h:outputText id="unidade" value="#{colaboradorMBean.unidade.nome}" />
+	   					</p>
+	   					<p>
+	   						<h:outputLabel for="ramal" value="Ramal:" escape="false" />
+		   					<h:inputText id="ramal" required="false" value="#{colaboradorMBean.colaborador.ramal}" />
+	   					</p>
+	   				</h:panelGroup>
+	   				<br/>
+	   				<p:commandButton 
+	   					action="#{colaboradorMBean.associarUnidade}" 
+	   					ajax="false" 
+	   					image="ui-icon-disk" 
+	   					label="Associar" 
+	   					value="Associar"
+	   					rendered="#{colaboradorMBean.unidade.id ne null}" />
+	   				&nbsp;
+   					<p:commandButton 
+	   					value="Cancelar" 
+	   					action="#{colaboradorMBean.cancelarAssociacaoUnidade}" 
+	   					ajax="false" 
+	   					immediate="true" />
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

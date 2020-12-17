@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Tarefa">
+   				<br/>
+   				<h:inputHidden value="#{tarefaMBean.tarefa.id}" rendered="#{tarefaMBean.tarefa.id ne null}" />
+   				<p>
+					<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	   				<h:selectOneMenu id="projeto" 
+	   					value="#{tarefaMBean.projeto.id}"
+	   					required="true"
+   						requiredMessage="Favor informar o Projeto da Tarefa.">
+						<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+						<f:selectItems var="projeto" value="#{tarefaMBean.listaProjeto}" 
+							itemLabel="#{projeto.nome}" itemValue="#{projeto.id}"/>
+							
+						<f:ajax event="change" render="funcionalidade" listener="#{tarefaMBean.definirProjeto}" />
+					</h:selectOneMenu>
+				</p>
+				<p>
+					<h:outputLabel for="funcionalidade" value="Funcionalidade:" escape="false" />
+	   				<h:selectOneMenu id="funcionalidade" 
+	   					value="#{tarefaMBean.funcionalidade.id}"
+	   					required="true"
+   						requiredMessage="Favor informar a Funcionalidade da Tarefa.">
+						<f:selectItem itemLabel="Selecione uma Funcionalidade." itemValue="" />
+						<f:selectItems var="funcionalidade" value="#{tarefaMBean.listaFuncionalidade}" 
+							itemLabel="#{funcionalidade.nome}" itemValue="#{funcionalidade.id}"/>
+					</h:selectOneMenu>
+				</p>
+   				<p>
+	   				<h:outputLabel for="nomeTarefa" value="Nome:" escape="false" />
+   					<h:inputText id="nomeTarefa" 
+   						value="#{tarefaMBean.tarefa.nome}"
+   						required="true" 
+   						requiredMessage="Favor informar o Nome da Tarefa." 
+   						maxlength="50"
+   						size="60"/>
+	   			</p>
+				<p>
+					<h:outputLabel for="prazoTarefa" value="Prazo:" escape="false" />
+   					<p:calendar id="prazoTarefa" 
+   						value="#{tarefaMBean.tarefa.prazo}" 
+   						required="true" 
+   						requiredMessage="Favor informar o Prazo da Tarefa." 
+   						pattern="dd/MM/yyyy">
+   					</p:calendar>
+				</p>
+				<p>
+					<h:outputLabel for="statusTarefa" value="Status:" escape="false" />
+   					<h:selectOneMenu id="statusTarefa" 
+   						value="#{tarefaMBean.status.id}" 
+   						required="true"
+   						requiredMessage="Favor informar o Status da Tarefa.">
+   						<f:selectItem itemLabel="Selecione um Status" itemValue=""/>
+   						<f:selectItems var="status" value="#{statusMBean.listaStatusPorTarefa}" itemValue="#{status.id}" itemLabel="#{status.nome}" />
+   					</h:selectOneMenu>
+				</p>
+				<p>
+					<h:outputLabel for="tipoTarefa" value="Tipo da Tarefa:" escape="false" />
+   					<h:selectOneMenu id="tipoTarefa" 
+   						value="#{tarefaMBean.tipoTarefa}" 
+   						required="true"
+   						requiredMessage="Favor informar o Tipo da Tarefa.">
+   						<f:selectItem itemLabel="Selecione um Tipo de Tarefa" itemValue=""/>
+   						<f:selectItems var="tipoTarefa" value="#{tarefaMBean.listaTipoTarefa}" itemValue="#{tipoTarefa}" itemLabel="#{tipoTarefa.nome}" />
+   					</h:selectOneMenu>
+				</p>
+				<p>
+					<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" 
+   						required="true" 
+   						requiredMessage="Favor informar a Descri&ccedil;&atilde;o da Tarefa." 
+   						value="#{tarefaMBean.tarefa.descricao}"/>
+   				</p>
+   			</p:fieldset>
+   			<br/>
+   			<p:commandButton value="Salvar" action="#{tarefaMBean.incluir}" ajax="false" image="ui-icon-disk" rendered="#{tarefaMBean.tarefa.id eq null}"/>
+   			<p:commandButton value="Salvar" action="#{tarefaMBean.alterar}" ajax="false" image="ui-icon-disk" rendered="#{tarefaMBean.tarefa.id ne null}"/>
+   			<p:commandButton value="Cancelar" action="#{tarefaMBean.cancelar}" ajax="false" immediate="true" />
+   		</h:form>
+   	</ui:define>
+</ui:composition>

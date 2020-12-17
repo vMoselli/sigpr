@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Demanda">
+   				<p>
+	   				<h:outputLabel for="fileUpload" value="Arquivo:" escape="false" />
+   					<p:fileUpload
+						id="fileUpload" 
+						multiple="false" 
+						allowTypes="*.xml" 
+						auto="true"
+						customUI="false"
+						fileUploadListener="#{demandaMBean.handleFileUpload}"
+						description="Arquivo de Demanda."
+						label="Selecionar"
+						sizeLimit="102400"
+						update=":messages"
+						widgetVar="fileUpload"/>
+	   			</p>
+	   			<br />
+	   			<br />
+	   			<p:commandButton value="Importar" action="#{demandaMBean.importarDemanda}" ajax="false" image="ui-icon-disk" />
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

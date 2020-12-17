@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Usu&aacute;rio">
+   				<h:inputHidden id="idUsuario" value="#{colaboradorMBean.usuario.id}" />
+	   			<p>
+	   				<h:outputLabel for="login" value="Login:" escape="false" />
+	 				<h:inputText 
+	 						id="login" 
+	 						value="#{colaboradorMBean.usuario.login}" 
+	   						required="true" 
+	   						requiredMessage="Favor informar o Login." 
+	   						maxlength="50"/>
+	   			</p>
+	   			<p>
+					<h:outputLabel for="senha" value="Senha:" escape="false" />
+   					<p:password 
+   							minLength="10" 
+   							id="senha" 
+   							maxlength="30" 
+	   						required="true" 
+	   						requiredMessage="Favor informar a Senha." 
+	   						value="#{colaboradorMBean.usuario.senha}"
+	   						weakLabel="Fraco"
+	   						goodLabel="Bom"
+	   						strongLabel="Forte"
+	   						promptLabel="Favor informar a Senha." 
+	   						valueChangeListener="#{colaboradorMBean.changePassword}">
+	   						<f:ajax event="blur" render=":messages" />
+   					</p:password>
+				</p>
+				<p>
+	   				<h:outputLabel for="confirmacao" value="Confirma&ccedil;&atilde;o:" escape="false" />
+  					<p:password 
+  							minLength="10" 
+  							id="confirmacao" 
+  							maxlength="30" 
+	   						required="#{colaboradorMBean.usuario.id eq null or colaboradorMBean.passwordChanged}"
+	   						requiredMessage="Favor informar a Confirma&ccedil;&atilde;o." 
+	   						value="#{colaboradorMBean.confirmacao}" 
+	   						validator="#{colaboradorMBean.validateSamePassword}"
+	   						weakLabel="Fraco"
+	   						goodLabel="Bom"
+	   						strongLabel="Forte"
+	   						promptLabel="Favor informar a Confirma&ccedil;&atilde;o.">
+	   						<f:ajax event="blur" render=":messages"></f:ajax>
+   					</p:password>
+	   			</p>
+   			</p:fieldset>
+   			<br />
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Colaborador">
+   				<h:inputHidden value="#{colaboradorMBean.colaborador.id}" rendered="#{colaboradorMBean.colaborador.id ne null}" />
+	   			<p>
+	   				<h:outputLabel for="nome" value="Nome:" escape="false" />
+   					<h:inputText id="nome" value="#{colaboradorMBean.colaborador.nome}" required="true" requiredMessage="Favor informar o Nome." maxlength="50"/>
+				</p>
+				<p>
+					<h:outputLabel for="fileUpload" value="Foto:" escape="false" />
+					<p:fileUpload
+						id="fileUpload" 
+						multiple="false" 
+						allowTypes="*.jpg;*.jpeg;*.png;*.bmp" 
+						auto="false"
+						customUI="false"
+						fileUploadListener="#{colaboradorMBean.handleFileUpload}"
+						description="Foto."
+						label="Selecionar"
+						sizeLimit="102400"
+						update=":messages, image"
+						widgetVar="fileUpload"/>
+							
+					<p:graphicImage 
+						id="image" 
+						rendered="#{colaboradorMBean.colaborador.imagem ne null}"
+						value="#{colaboradorMBean.image}" />
+				</p>
+				<p>
+					<h:outputLabel for="cpf" value="CPF:" escape="false" />
+   					<p:inputMask mask="999.999.999-99" id="cpf" value="#{colaboradorMBean.colaborador.cpf}" required="true" requiredMessage="Favor informar o CPF." />
+				</p>
+				<p>
+	   				<h:outputLabel for="celular" value="Celular:" escape="false" />
+   					<p:inputMask mask="(99) 9999-9999" id="celular" required="true" requiredMessage="Favor informar o celular." value="#{colaboradorMBean.colaborador.celular}" />
+	   			</p>
+				<p>
+	   				<h:outputLabel for="perfil" value="Perfil:" escape="false" />
+					<h:selectOneMenu 
+						id="perfil" 
+						required="true" 
+						requiredMessage="Favor informar o Perfil." 
+						value="#{colaboradorMBean.perfil.id}">
+						<f:selectItem itemLabel="Selecione um Perfil" itemValue=""></f:selectItem>
+						<f:selectItems value="#{perfilMBean.listaPerfil}" var="perfil" itemLabel="#{perfil.nome}" itemValue="#{perfil.id}"></f:selectItems>
+					</h:selectOneMenu>
+   				</p>
+   			</p:fieldset>
+   			<br />
+   			<p:commandButton value="Salvar" action="#{colaboradorMBean.incluir}" ajax="false" image="ui-icon-disk" rendered="#{colaboradorMBean.colaborador.id eq null}"/>
+   			<p:commandButton value="Salvar" action="#{colaboradorMBean.alterar}" ajax="false" image="ui-icon-disk" rendered="#{colaboradorMBean.colaborador.id ne null}"/>
+   			<p:commandButton value="Cancelar" action="#{colaboradorMBean.cancelar}" ajax="false" immediate="true" />
+   		</h:form>
+   	</ui:define>
+</ui:composition>

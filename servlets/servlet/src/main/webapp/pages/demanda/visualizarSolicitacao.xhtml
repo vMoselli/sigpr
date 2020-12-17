@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Solicita&ccedil;&atilde;o de Demanda">
+   				<p>
+	   				<h:outputLabel value="Prioridade:" escape="false" />
+   					<h:outputText value="#{demandaMBean.solicitacao.prioridade}" />
+	   			</p>
+	   			<p>
+					<h:outputLabel value="Data da Solicita&ccedil;&atilde;o:" escape="false" />
+   					<h:outputText value="#{demandaMBean.solicitacao.dataSolicitacao}">
+   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+   					</h:outputText>
+	   			</p>
+	   			<p>
+					<h:outputLabel value="Status da Solicita&ccedil;&atilde;o:" escape="false" />
+   					<h:outputText value="#{demandaMBean.solicitacao.status}" />
+	   			</p>
+	   			<p>
+					<h:outputLabel value="Data do Atendimento:" escape="false" />
+   					<h:outputText value="#{demandaMBean.solicitacao.dataAtendimento}" rendered="#{demandaMBean.solicitacao.dataAtendimento ne null}">
+   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+   					</h:outputText>
+	   			</p>
+	   			<p>
+					<h:outputLabel value="Colaborador Atendimento:" escape="false" />
+   					<h:outputText value="#{demandaMBean.solicitacao.colaborador.nome}" rendered="#{demandaMBean.solicitacao.colaborador ne null}"/>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel value="Descri&ccedil;&atilde;o da Solicita&ccedil;&atilde;o:" escape="false" />
+   					<h:outputText value="#{demandaMBean.solicitacao.descricao}" escape="false" />
+	   			</p>
+	   			<br />
+	   			<br />
+	   			<p:commandButton value="Voltar" action="#{demandaMBean.voltarLista}" ajax="false" immediate="true"/>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

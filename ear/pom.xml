@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>br.com.vmoselli.sigpr</groupId>
+    <artifactId>sigpr</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>ear</artifactId>
+  <packaging>ear</packaging>
+
+  <name>ear assembly</name>
+
+  <properties>
+    <maven.compiler.source>13</maven.compiler.source>
+    <maven.compiler.target>13</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>br.com.vmoselli.sigpr</groupId>
+      <artifactId>ejbs</artifactId>
+      <type>ejb</type>
+    </dependency>
+    <dependency>
+      <groupId>br.com.vmoselli.sigpr</groupId>
+      <artifactId>servlet</artifactId>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>br.com.vmoselli.sigpr</groupId>
+      <artifactId>primary-source</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>br.com.vmoselli.sigpr</groupId>
+      <artifactId>logging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>br.com.vmoselli.sigpr</groupId>
+      <artifactId>commons</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+          <defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tomee.maven</groupId>
+        <artifactId>tomee-maven-plugin</artifactId>
+        <configuration>
+          <tomeeClassifier>plus</tomeeClassifier>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es da Solicita&ccedil;&atilde;o de Demanda">
+   				<p>
+	   				<h:outputLabel for="prioridade" value="Prioridade:" escape="false" />
+   					<h:selectOneMenu id="prioridade" 
+   						value="#{demandaMBean.solicitacao.prioridade}"  
+   						required="true"
+   						requiredMessage="Favor informar a Prioridade da Solicita&ccedil;&atilde;o de Demanda.">
+   						<f:selectItem itemLabel="Selecione uma Prioridade." itemValue="" />
+   						<f:selectItems var="prioridade" value="#{demandaMBean.listaPrioridade}"
+   							itemValue="#{prioridade}" itemLabel="#{prioridade}" />
+					</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o da Solicita&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" 
+   						required="true" 
+   						requiredMessage="Favor informar a Descri&ccedil;&atilde;o da Solicita&ccedil;&atilde;o de Demanda." 
+   						value="#{demandaMBean.solicitacao.descricao}"/>
+	   			</p>
+	   			<br />
+	   			<br />
+	   			<p:commandButton value="Incluir Solicitação" action="#{demandaMBean.incluirSolicitacao}" ajax="false" image="ui-icon-disk" />
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

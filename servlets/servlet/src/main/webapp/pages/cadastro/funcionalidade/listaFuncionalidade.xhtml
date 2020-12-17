@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form>
+   			<p:confirmDialog message="Deseja excluir o item selecionado?" modal="true"
+   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+				header="Confirma&ccedil;&atilde;o de Exclus&atilde;o" severity="alert"
+				widgetVar="confirm">
+				<p:commandButton value="Sim" action="#{funcionalidadeMBean.excluir}"
+					type="submit" onclick="confirm.hide()" ajax="false"/>
+				<p:commandButton value="N&atilde;o" onclick="confirm.hide();"
+					type="button" />
+			</p:confirmDialog>
+   			<p:fieldset legend="Funcionalidades Cadastradas">
+	   			<p:dataTable value="#{funcionalidadeMBean.listaFuncionalidade}" 
+	   				var="funcionalidade" 
+	   				emptyMessage="Não foram encontradas Funcionalidades cadastradas." 
+	   				rows="10"
+	   				paginator="true">
+	   				<p:column headerText="Nome" sortBy="#{funcionalidade.nome}" filterBy="#{funcionalidade.nome}">
+	   					<h:outputText value="#{funcionalidade.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Prazo" sortBy="#{funcionalidade.prazo}">
+	   					<h:outputText value="#{funcionalidade.prazo}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Status" sortBy="#{funcionalidade.status.nome}" filterBy="#{funcionalidade.status.nome}">
+	   					<h:outputText value="#{funcionalidade.status.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Quantidade Tarefas" sortBy="#{fn:length(funcionalidade.tarefas)}">
+	   					<h:outputText value="#{fn:length(funcionalidade.tarefas)}"/>
+	   				</p:column>
+	   				<p:column headerText="Opera&ccedil;&otilde;es">
+	   					<p:commandButton action="#{funcionalidadeMBean.inicializaEdicao}" image="ui-icon-search" type="submit" ajax="false" title="Alterar">
+	   						<f:setPropertyActionListener target="#{funcionalidadeMBean.funcionalidadeSelecionada}" value="#{funcionalidade}" />
+	   					</p:commandButton>
+	   					<p:commandButton oncomplete="confirm.show();" image="ui-icon-trash" title="Excluir">
+	   						<f:setPropertyActionListener target="#{funcionalidadeMBean.funcionalidadeSelecionada}" value="#{funcionalidade}"/>
+	   					</p:commandButton>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<p:commandButton value="Incluir" action="#{funcionalidadeMBean.inicializaEdicao}" type="submit" ajax="false" />
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

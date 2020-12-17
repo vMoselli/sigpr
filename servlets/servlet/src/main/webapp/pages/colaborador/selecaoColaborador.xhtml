@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Colaboradores">
+	   			<p:dataTable 
+	   				value="#{colaboradorMBean.listaColaborador}" 
+	   				var="colaborador" 
+	   				emptyMessage="Não foram encontrados Colaboradores cadastrados." 
+	   				rows="10"
+	   				paginator="true"
+	   				selection="#{colaboradorMBean.colaborador}"
+	   				selectionMode="single"
+	   				onRowSelectUpdate="buttons"
+	   				onRowUnselectUpdate="buttons">
+	   				<p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">
+	   					<h:outputText value="#{colaborador.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Perfil" sortBy="#{colaborador.perfil.nome}" filterBy="#{colaborador.perfil.nome}">
+	   					<h:outputText value="#{colaborador.perfil.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Unidade" sortBy="#{colaborador.unidade.nome}" filterBy="#{colaborador.unidade.nome}">
+	   					<h:outputText value="#{colaborador.unidade.nome}" rendered="#{colaborador.unidade ne null}"/>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<h:panelGroup id="buttons">
+	   				<p:commandButton 
+	   					value="Associar Unidade" 
+	   					action="associarUnidade" 
+	   					type="submit" 
+	   					ajax="false"
+						rendered="#{colaboradorMBean.colaborador.id ne null}"/>
+						&nbsp;
+						&nbsp;
+	   				<p:commandButton 
+	   					value="Associar Projeto" 
+	   					action="associarProjeto" 
+	   					type="submit" ajax="false" 
+	   					rendered="#{colaboradorMBean.colaborador.id ne null}"/>
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

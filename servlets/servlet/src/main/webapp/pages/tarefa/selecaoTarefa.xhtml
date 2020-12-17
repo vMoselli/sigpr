@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Sele&ccedil;&atilde;o de Tarefa">
+   				<p>
+   					<h:outputLabel value="Selecione o Projeto e a Funcionalidade para consultar as tarefas dispon&iacute;veis." style="width: 550px;"/>
+   				</p>
+   				<p>
+					<h:outputLabel for="projeto" value="Projeto:" escape="false" />
+	   				<h:selectOneMenu id="projeto" value="#{tarefaMBean.projeto.id}">
+						<f:selectItem itemLabel="Selecione um Projeto." itemValue="" />
+						<f:selectItems var="projeto" value="#{tarefaMBean.listaProjeto}" 
+							itemLabel="#{projeto.nome}" itemValue="#{projeto.id}"/>
+							
+						<f:ajax event="change" render="funcionalidade tarefa" listener="#{tarefaMBean.definirProjeto}" />
+					</h:selectOneMenu>
+				</p>
+				<p>
+					<h:outputLabel for="funcionalidade" value="Funcionalidade:" escape="false" />
+	   				<h:selectOneMenu id="funcionalidade" value="#{tarefaMBean.funcionalidade.id}">
+						<f:selectItem itemLabel="Selecione uma Funcionalidade." itemValue="" />
+						<f:selectItems var="funcionalidade" value="#{tarefaMBean.listaFuncionalidade}" 
+							itemLabel="#{funcionalidade.nome}" itemValue="#{funcionalidade.id}"/>
+							
+						<f:ajax event="change" render="tarefa" listener="#{tarefaMBean.definirFuncionalidade}" />
+					</h:selectOneMenu>
+				</p>
+	   			<p:dataTable 
+	   				id="tarefa"
+	   				value="#{tarefaMBean.listaTarefa}" 
+	   				var="tarefa" 
+	   				emptyMessage="Não foram encontradas Tarefas para atribui&ccedil;&atilde;o." 
+	   				rows="10"
+	   				paginator="true"
+	   				selection="#{tarefaMBean.tarefa}"
+	   				selectionMode="single"
+	   				onRowSelectUpdate="buttons"
+	   				onRowUnselectUpdate="buttons">
+	   				<p:column headerText="Nome" sortBy="#{tarefa.nome}" filterBy="#{tarefa.nome}">
+	   					<h:outputText value="#{tarefa.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Prazo" sortBy="#{tarefa.prazo}">
+	   					<h:outputText value="#{tarefa.prazo}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Tipo" sortBy="#{tarefa.tipoTarefa.nome}" filterBy="#{tarefa.tipoTarefa.nome}">
+	   					<h:outputText value="#{tarefa.tipoTarefa.nome}"/>
+	   				</p:column>
+	   				<p:column headerText="Colaborador Responsável" sortBy="#{tarefa.colaborador.nome}" filterBy="#{tarefa.colaborador.nome}">
+	   					<h:outputText value="#{tarefa.colaborador.nome}"/>
+	   				</p:column>
+	   			</p:dataTable>
+	   			<br />
+	   			<h:panelGroup id="buttons">
+	   				<p:commandButton 
+	   					value="Selecionar" 
+	   					action="#{tarefaMBean.selecionarTarefa}" 
+	   					type="submit" 
+	   					ajax="false"
+						rendered="#{tarefaMBean.tarefa.id ne null}"/>
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

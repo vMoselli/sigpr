@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Status">
+   				<h:inputHidden id="idstatus" value="#{statusMBean.status.id}" rendered="#{statusMBean.status.id ne null}"/>
+   				<p>
+	   				<h:outputLabel for="nome" value="Nome Status:" escape="false" />
+   					<h:inputText id="nome" value="#{statusMBean.status.nome}" required="true" requiredMessage="Favor informar o Nome do Status." maxlength="50"/>
+	   			</p>
+	   			<p>
+					<h:outputLabel for="tipoStatus" value="Tipo Status:" escape="false" />
+   					<h:selectOneMenu id="tipoStatus" value="#{statusMBean.status.tipoStatus}" required="true" requiredMessage="Favor informar o Tipo do Status.">
+   						<f:selectItem itemLabel="Selecione um Tipo de Status" itemValue="" />
+   						<f:selectItems id="tipo" value="#{statusMBean.listaTipoStatus}" 
+   							itemValue="#{tipo}" itemLabel="#{tipo}" />
+   					</h:selectOneMenu>
+	   			</p>
+	   			<p>
+	   				<h:outputLabel for="descricao" value="Descri&ccedil;&atilde;o:" escape="false" />
+   					<p:editor id="descricao" required="true" requiredMessage="Favor informar a Descri&ccedil;&atilde;o do Status." value="#{statusMBean.status.descricao}"></p:editor>
+	   			</p>
+	   			<p:commandButton value="Salvar" image="ui-icon-disk" action="#{statusMBean.alterar}" ajax="false" rendered="#{statusMBean.status.id ne null}"/>
+	   			<p:commandButton value="Salvar" image="ui-icon-disk" action="#{statusMBean.incluir}" ajax="false" rendered="#{statusMBean.status.id eq null}"/>
+	   			<p:commandButton value="Cancelar" action="#{statusMBean.cancelar}" ajax="false" immediate="true"/>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

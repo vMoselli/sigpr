@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="pages/templates/sigprLayout.xhtml" 
+   	xmlns="http://www.w3.org/1999/xhtml"   
+   	xmlns:h="http://java.sun.com/jsf/html"
+   	xmlns:f="http://java.sun.com/jsf/core"
+   	xmlns:ui="http://java.sun.com/jsf/facelets"
+   	xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="menu">&nbsp;</ui:define>
+   	<ui:define name="content">
+   		<h:form styleClass="form">
+   			<div align="center" style="width:100%;">
+	   			<p:fieldset legend="Login" style="width: 400px; text-align: left;">
+		   			<p>
+		   				<h:outputLabel for="username" value="Usuário:" escape="false" />
+		   				<p:inputText
+							value="#{loginUsuarioMBean.username}" 
+							id="username" 
+							required="true" 
+							requiredMessage="Favor informar o usuário." 
+							maxlength="30" 
+							size="40"/>
+		   			</p>
+		   			<p>
+		   				<h:outputLabel for="password" value="Senha:" escape="false"/>
+						<p:password
+							value="#{loginUsuarioMBean.password}" 
+							id="password" 
+							required="true" 
+							requiredMessage="Favor informar a senha." 
+							maxlength="30"
+							size="40"
+							feedback="false"
+							autocomplete="false"/>
+		   			</p>
+		   			<p:commandButton value="Login" action="#{loginUsuarioMBean.login}" ajax="false"></p:commandButton>
+	   			</p:fieldset>
+	   		</div>
+   		</h:form>
+   	</ui:define>
+</ui:composition>

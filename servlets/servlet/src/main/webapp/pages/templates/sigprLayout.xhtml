@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<f:view contentType="text/html">
+	    <h:head>
+	    	<title>SIGPRWeb<ui:insert name="title">&nbsp;</ui:insert></title>
+	        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	        <h:outputStylesheet library="css" name="main.css" />
+	    </h:head>
+	    <h:body>
+    		<f:metadata>
+    			<f:phaseListener type="br.com.sigpr.jsf.util.listeners.MarkerPhaseListener" />
+    		</f:metadata>
+   			<p:growl id="messages" />
+    		<ui:insert name="header">
+    			<p:panel style="padding-bottom: 10px;">
+	    			<h:form>
+	    				<h1>SIGPRWeb</h1>
+	    			</h:form>
+    				<h2>Sistema de Gerenciamento de Projetos WEB</h2>
+    				<span style="float: left; font-size: 12px;">
+    					<h:outputText value="#{loginUsuarioMBean.data}" rendered="#{loginUsuarioMBean.usuarioLogado}">
+    						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
+    					</h:outputText>
+    					<h:inputHidden id="idColaborador" value="#{loginUsuarioMBean.idColaborador}" rendered="#{loginUsuarioMBean.usuarioLogado}"/>
+    				</span>
+    				<span style="float: right; font-size: 12px;">
+    					<h:outputText value="#{loginUsuarioMBean.usuario.colaborador.nome} (#{loginUsuarioMBean.perfil.nome})"
+    						rendered="#{loginUsuarioMBean.usuarioLogado}" />
+    				</span>
+    			</p:panel>
+	        </ui:insert>
+	    	<ui:insert name="menu">
+	    		<h:form>
+	    			<p:confirmDialog message="Deseja sair do sistema?" modal="true"
+		   				showEffect="fade" hideEffect="fade" draggable="false" width="400"
+						header="Confirma&ccedil;&atilde;o" severity="alert"
+						widgetVar="exitConfirmation">
+						<p:commandButton value="Sim" action="#{loginUsuarioMBean.logout}"
+							type="submit" onclick="exitConfirmation.hide()" ajax="false"/>
+						<p:commandButton value="N&atilde;o" onclick="exitConfirmation.hide();"
+							type="button" />
+					</p:confirmDialog>
+		    		<p:menubar autoSubmenuDisplay="true">
+   						<p:menuitem value="Home" url="/pages/index.prime" />
+   						
+   						<p:menuitem value="Horas Trabalhadas" action="/pages/horas/horasTrabalhadas.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioColaborador}">
+   							<f:setPropertyActionListener target="#{apontamentoMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+   						</p:menuitem>
+   						
+   						<p:menuitem value="Minhas Tarefas" action="/pages/tarefa/tarefasAtribuidas.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioColaborador}">
+   							<f:setPropertyActionListener target="#{tarefasAtribuidasMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+   						</p:menuitem>
+   						
+   						<p:menuitem value="Tarefas Atribuídas" action="/pages/tarefa/tarefasAtribuidas.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional or loginUsuarioMBean.usuarioGerenteDeProjeto}">
+   							<f:setPropertyActionListener target="#{tarefasAtribuidasMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+   						</p:menuitem>
+   							
+   						<p:menuitem value="Meus Dados" action="/pages/colaborador/editarDados" ajax="false">
+   							<f:setPropertyActionListener target="#{colaboradorMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+   						</p:menuitem>
+   							
+		    			<p:submenu label="Cadastros" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional}">
+		    				<p:menuitem value="Projeto" action="/pages/cadastro/projeto/listaProjeto.prime" ajax="false">
+		    					<f:setPropertyActionListener target="#{projetoMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    				<p:menuitem value="Funcionalidade" action="/pages/cadastro/funcionalidade/listaFuncionalidade.prime" ajax="false">
+		    					<f:setPropertyActionListener target="#{funcionalidadeMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    				<p:menuitem value="Tarefa" action="/pages/cadastro/tarefa/listaTarefa.prime" ajax="false">
+		    					<f:setPropertyActionListener target="#{tarefaMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    				<p:menuitem value="Artefatos" action="/pages/cadastro/tarefa/artefato/listaArtefato.prime" ajax="false">
+		    					<f:setPropertyActionListener target="#{artefatoMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    			</p:submenu>
+		    			
+		    			<p:submenu label="Colaboradores" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional}">
+	    					<p:menuitem value="Associar" url="/pages/colaborador/selecaoColaborador.prime" />
+		    			</p:submenu>
+		    			
+		                <p:menuitem value="Atribuir Tarefa" action="/pages/tarefa/selecaoTarefa.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional}" >
+		                	<f:setPropertyActionListener target="#{tarefaMBean.colaboradorLogadoAtribuicao}" value="#{loginUsuarioMBean.idColaborador}" />
+		                </p:menuitem>
+		                
+		    			<p:submenu label="Cadastros" rendered="#{loginUsuarioMBean.usuarioAdministrador}">
+		    				<p:menuitem value="Perfil" url="/pages/cadastro/perfil/listaPerfil.prime" />
+		    				<p:menuitem value="Unidade" url="/pages/cadastro/unidade/listaUnidade.prime" />
+		    				<p:menuitem value="Colaborador" url="/pages/cadastro/colaborador/listaColaborador.prime" />
+		    				<p:menuitem value="Status" url="/pages/cadastro/status/listaStatus.prime"/>
+		    				<p:menuitem value="Papel" url="/pages/cadastro/papel/listaPapel.prime"/>
+		    			</p:submenu>
+		    			
+		    			<p:submenu label="Demanda" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional or loginUsuarioMBean.usuarioGerenteDeProjeto}">
+		    				<p:menuitem value="Solicita&ccedil;&atilde;o de Nova Demanda" action="/pages/demanda/novaSolicitacao.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioGerenteDeProjeto}">
+		    					<f:setPropertyActionListener target="#{demandaMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    				<p:menuitem value="Atendimento de Solicita&ccedil;&otilde;es" action="/pages/demanda/listaSolicitacao.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional}">
+		    					<f:setPropertyActionListener target="#{demandaMBean.colaboradorLogadoLista}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    				<p:menuitem value="Importa&ccedil;&atilde;o de Demanda" action="/pages/demanda/importarDemanda.prime" ajax="false" rendered="#{loginUsuarioMBean.usuarioGerenteDeProjeto}">
+		    					<f:setPropertyActionListener target="#{demandaMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    			</p:submenu>
+		    			
+		    			<p:submenu label="Relatórios" rendered="#{loginUsuarioMBean.usuarioGerenteOperacional or loginUsuarioMBean.usuarioGerenteDeProjeto}">
+		    				<p:menuitem value="Colaborador por Unidade / Papel nos Projetos / Perfil / Projeto" action="/pages/relatorios/filtroColaborador.prime" ajax="false" style="width: 350px;">
+		    					<f:setPropertyActionListener target="#{relatorioColaboradorMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    				<p:submenu label="Projetos">
+			    				<p:menuitem value="Projetos por Colaborador / Prazo" action="/pages/relatorios/filtroProjeto.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioProjetoMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    				<p:menuitem value="Projetos por Status" action="/pages/relatorios/filtroProjetoStatus.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioProjetoStatusMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+		    				</p:submenu>
+		    				<p:submenu label="Funcionalidades">
+			    				<p:menuitem value="Funcionalidades Por Projeto" action="/pages/relatorios/filtroFuncionalidade.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioFuncionalidadeMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    				<p:menuitem value="Funcionalidades Por Status" action="/pages/relatorios/filtroFuncionalidadeStatus.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioFuncionalidadeStatusMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    			</p:submenu>
+		    				<p:submenu label="Tarefas">
+			    				<p:menuitem value="Tarefas por Colaborador / Funcionalidade / Projeto e Tipo de Tarefa" action="/pages/relatorios/filtroTarefa.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioTarefaMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    				<p:menuitem value="Tarefas por Status" action="/pages/relatorios/filtroTarefaStatus.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioTarefaStatusMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    				<p:menuitem value="Artefatos por Tarefa" action="/pages/relatorios/filtroArtefatoTarefa.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioArtefatoTarefaMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    				<p:menuitem value="Erros por Projeto e/ou por Colaborador" action="/pages/relatorios/filtroErro.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioErrosMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+		    				</p:submenu>
+		    				<p:submenu label="Horas">
+			    				<p:menuitem value="Tarefa" action="/pages/relatorios/filtroHorasTarefa.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioHorasTarefaMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+			    				<p:menuitem value="Colaborador" action="/pages/relatorios/filtroHorasColaborador.prime" ajax="false">
+			    					<f:setPropertyActionListener target="#{relatorioHorasColaboradorMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+			    				</p:menuitem>
+		    				</p:submenu>
+		    				<p:menuitem value="Histórico de Colaboradores / Funcionalidades / Projetos / Tarefas" action="/pages/relatorios/filtroHistorico.prime" ajax="false">
+		    					<f:setPropertyActionListener target="#{relatorioHistoricoMBean.colaboradorLogado}" value="#{loginUsuarioMBean.idColaborador}" />
+		    				</p:menuitem>
+		    			</p:submenu>
+		    			
+		                <p:menuitem value="Sair" onclick="exitConfirmation.show();" />
+		    		</p:menubar>
+		    		
+		    		<p:idleMonitor onidle="dlgSessionExpired.show()" timeout="300000" />
+					<p:dialog 
+						draggable="false" 
+						resizable="false" 
+					    closable="false" 
+					    widgetVar="dlgSessionExpired"
+					    width="400" 
+					    height="150" 
+					    modal="true"
+					    showEffect="fade" 
+					    hideEffect="fade"
+					    header="Sessão Expirada">
+					    <h:panelGrid style="margin: 0 auto; padding-top: 15px;" columns="1">
+					        <h:outputText value="Sua Sessão Expirou!" style="font-size: 10pt;font-weight: bold"/>
+					        <p:commandButton ajax="false" value="Entrar Novamente" action="login"/>
+					    </h:panelGrid>
+					</p:dialog>
+		    	</h:form>
+	    	</ui:insert>
+	        <ui:insert name="content" />
+	        <ui:insert name="footer" />
+    	</h:body>
+    </f:view>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/pages/templates/sigprLayout.xhtml"
+   	xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+   	<ui:define name="content">
+   		<br />
+   		<h:form styleClass="form">
+   			<p:fieldset legend="Informa&ccedil;&otilde;es do Colaborador">
+   				<h:inputHidden value="#{colaboradorMBean.colaborador.id}" rendered="#{colaboradorMBean.colaborador.id ne null}" />
+	   			<p>
+	   				<h:outputLabel value="Nome:" escape="false" />
+   					<h:outputText value="#{colaboradorMBean.colaborador.nome}" />
+				</p>
+				<p>
+					<h:outputLabel value="CPF:" escape="false" />
+   					<h:outputText value="#{colaboradorMBean.colaborador.cpf}" />
+				</p>
+				<p>
+	   				<h:outputLabel value="Celular:" escape="false" />
+   					<h:outputText value="#{colaboradorMBean.colaborador.celular}" />
+	   			</p>
+				<p>
+	   				<h:outputLabel value="Perfil:" escape="false" />
+					<h:outputText value="#{colaboradorMBean.colaborador.perfil.nome}" />
+   				</p>
+   			</p:fieldset>
+   			<p:fieldset legend="Projetos" id="projetos">
+   				<p>
+   					<h:outputLabel value="Selecione o projeto." />
+   				</p>
+   				<br />
+   				<p:dataTable
+   					paginator="true"
+   					selection="#{colaboradorMBean.projeto}"
+   					selectionMode="single"
+   					onRowSelectUpdate="fields"
+   					value="#{colaboradorMBean.listaProjetosNaoAssociados}" 
+   					var="projeto" 
+   					emptyMessage="Não foram encontrados Projetos para Associar." 
+   					rows="10">
+	   				<p:column headerText="Nome" sortBy="#{projeto.nome}" filterBy="#{projeto.nome}">
+	   					<h:outputText value="#{projeto.nome}" />
+	   				</p:column>
+	   				<p:column headerText="Prazo" sortBy="#{projeto.prazo}">
+	   					<h:outputText value="#{projeto.prazo}">
+	   						<f:convertDateTime pattern="dd/MM/yyyy"/>
+	   					</h:outputText>
+	   				</p:column>
+	   				<p:column headerText="Status" sortBy="#{projeto.status.nome}" filterBy="#{projeto.status.nome}">
+	   					<h:outputText value="#{projeto.status.nome}" />
+	   				</p:column>
+	   			</p:dataTable>
+	   			
+	   			<h:panelGroup id="fields">
+	   				<h:panelGroup rendered="#{colaboradorMBean.projeto.id ne null}" style="margin-top: 10px">
+	   					<p>
+	   						<h:outputLabel for="projeto" value="Projeto Selecionado:" escape="false" />
+	   						<h:outputText id="projeto" value="#{colaboradorMBean.projeto.nome}" />
+	   					</p>
+	   					<p>
+		   					<h:outputLabel for="papelColaborador" value="Papel:" escape="false" />
+		   					<h:selectOneMenu id="papelColaborador" value="#{colaboradorMBean.papel.id}">
+		   						<f:selectItem itemLabel="Selecione um Papel" />
+		   						<f:selectItems var="papel" value="#{colaboradorMBean.listaPapel}"
+		   							itemValue="#{papel.id}" itemLabel="#{papel.nome}" />
+		   					</h:selectOneMenu>
+		   					<p:tooltip for="papelColaborador" 
+		   						hideEffect="fade" hideEffectLength="500" 
+		   						showEffect="fade" showEffectLength="500"
+		   						targetPosition="topRight" position="bottomLeft"
+		   						value="Representa qual o papel desempenhado pelo Colaborador no Projeto." />
+	   					</p>
+	   				</h:panelGroup>
+	   				<br />
+	   				<h:panelGroup style="margin-top: 10px" rendered="#{colaboradorMBean.projeto.id ne null}">
+		   				<p:commandButton 
+		   					action="#{colaboradorMBean.associar}" 
+		   					ajax="true" 
+		   					image="ui-icon-disk" 
+		   					label="Salvar" 
+		   					value="Salvar"
+		   					update="projetos"/>
+		   					&nbsp;
+		   					&nbsp;
+		   				<p:commandButton
+		   					value="Limpar Campos"
+		   					type="reset" />
+	   					&nbsp;
+	   					&nbsp;
+		   			</h:panelGroup>
+	   				<p:commandButton 
+	   					value="Cancelar" 
+	   					action="#{colaboradorMBean.cancelarAssociacao}" 
+	   					ajax="false" 
+	   					immediate="true" />
+	   			</h:panelGroup>
+   			</p:fieldset>
+   		</h:form>
+   	</ui:define>
+</ui:composition>
